@@ -17,10 +17,10 @@ def extract_entity_contracts(entity_name):
             all contracts issued by the municipality/department to a third party contractor
     """
     entity_name = 'INSTITUTO NACIONAL DE VÍAS (INVIAS)'
-    url_secop = 'https://www.datos.gov.co/resource/c6dm-udt9.json'
+    url_secop = 'https://www.datos.gov.co/resource/xvdy-vvsk.json'
     p_entity = {'nombre_de_la_entidad': entity_name,
-                '$limit': 10000,
-                'causal_de_otras_formas_de_contratacion_directa': 'Contratos Interadministrativos (Literal C)'}
+                '$limit': '10000',
+                'causal_de_otras_formas_de': 'Contratos Interadministrativos (Literal C)'}
     r_entity = requests.get(url_secop, params=p_entity)
     d_entity = r_entity.json()  # To .json
     df_entity = pd.DataFrame(d_entity)  # To df
@@ -42,7 +42,7 @@ def extract_mun_contracts(mun_name):
             all contracts issued by the municipality/department to a third party contractor
     """
     # Getting df of all contracts issued by the municipality/department to a third party contractor
-    url_secop = 'https://www.datos.gov.co/resource/c6dm-udt9.json'
+    url_secop = 'https://www.datos.gov.co/resource/xvdy-vvsk.json'
     p_api = {'nombre_de_la_entidad': mun_name, '$limit': 1000000}
     r_api = requests.get(url_secop, params=p_api)
     d_api = r_api.json()  # To .json

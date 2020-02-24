@@ -7,7 +7,7 @@ from scipy.sparse import csr_matrix
 import sparse_dot_topn.sparse_dot_topn as ct
 
 
-def ngrams(name_string, n):
+def ngrams(name_string, n=3):
     """
     Divides string in groups of n characters
 

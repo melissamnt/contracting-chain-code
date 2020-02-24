@@ -43,8 +43,9 @@ def df_filter_entity(df_entity):
 
     # Filtering entity df
     df_entity_filtered = df_entity[df_entity['nom_raz_social_contratista'].isin(entity_mun_dept)]
+    clean_mun_dept = df_entity_filtered['nom_raz_social_contratista'].tolist()
 
-    return df_entity_filtered, entity_mun_dept
+    return df_entity_filtered, clean_mun_dept
 
 
 # Taken from: https://stackoverflow.com/questions/14153364/reorder-string-using-regular-expressions
@@ -53,9 +54,10 @@ def standarize_mun(mun):
     Standardise municipality name
     Includes several special cases
     """
+    nmun = mun
     # Special cases
     if "MUNICIPIO DE" not in mun:
-        nmun = re.sub('MUNICIPIO', 'MUNICIPIO DE', mun)
+        nmun = re.sub('MUNICIPIO', 'MUNICIPIO DE', nmun)
     nmun = re.sub('DEPARTAMENTO DE|DEPARTAEMNTO DE| EN EL DEPARTAMENTO DE | EN EL DEPARTAMENTO DEL', ' - ', nmun)
     nmun = re.sub('MUNICIPIO DEL CARMEN DE BOLIVAR', 'MUNICIPIO DE CARMEN DE BOLIVAR', nmun)
     nmun = re.sub('MUNICIPIO DE EL CARMEN DE BOLIVAR', 'MUNICIPIO DE CARMEN DE BOLIVAR', nmun)
@@ -112,7 +114,7 @@ def standarize_obj(string_obj):
     """ Standardize description of the contract"""
     cachedStopWords = stopwords.words("spanish")
     cachedStopWords = [x.upper() for x in cachedStopWords]
-    clean_str = string_obj.upper()
+    clean_str = str(string_obj).upper()
     clean_str = ' '.join([word for word in clean_str.split() if word not in cachedStopWords])
     clean_str = unidecode.unidecode(clean_str)
     clean_str = re.sub(r'[^\w\s]', '', clean_str)
@@ -215,5 +217,7 @@ def standardize_format_mun(df_names, names_mun_standard):
         for contm, mun in enumerate(df_names['municipio']):
             if mun == string:
                 names_mun_standard[i] = df_names['departamento'][contm] + ' - ' 'ALCALDÍA MUNICIPIO DE ' + string
+
+    names_mun_standard = [re.sub(r'\s+$', '', item) for item in names_mun_standard]
 
     return names_mun_standard

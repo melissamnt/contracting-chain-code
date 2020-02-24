@@ -77,12 +77,13 @@ def contracting_chain(list_mun, n_contracts, entity_contracts):
 
             # Chain construction ----
             # Pastes complete info of the contracts with high similitude
-            for index_chain, row_chain in matches_df.iterrows():
+            for index_chain, row_chain in matches_df.loc[matches_df['pos_left'] == (len(description_list)-1)].iterrows():
                 if row_chain['pos_left'] == row_chain['pos_right']: continue
                 score = row_chain['similarity']
                 # Joining info
                 chain_entity = entity_row.to_frame().T
-                chain_mun = mun_contracts_filter.loc[row_chain['pos_right']].to_frame().T
+                if len(mun_contracts_filter) == row_chain['pos_right']: continue
+                chain_mun = mun_contracts_filter.iloc[row_chain['pos_right']].to_frame().T
                 chain_entity.index = [chain_cont]
                 chain_mun.index = [chain_cont]
                 chain_mun.columns = [str(col) + '_mun' for col in chain_mun.columns]
@@ -95,4 +96,5 @@ def contracting_chain(list_mun, n_contracts, entity_contracts):
                     chain_df.at[chain_df.index[chain_cont], 'valid'] = False
                 chain_cont = chain_cont + 1
 
+    chain_df = chain_df.loc[chain_df["valid"]]
     return chain_df
