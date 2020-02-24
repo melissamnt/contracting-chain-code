@@ -1,0 +1,9 @@
+pandas
+nltk
+unidecode
+unicodedata2
+requests
+numpy
+sklearn
+scipy
+sparse_dot_topn
