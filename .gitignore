@@ -1,2 +1,6 @@
+# Virtual env
 env
+
+# Other files
 .idea/
+.DS_Store
